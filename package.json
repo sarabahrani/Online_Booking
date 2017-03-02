@@ -31,6 +31,7 @@
   "dependencies": {
     "material-ui": "0.16.7",
     "moment": "2.17.1",
+    "node-sass": "4.0.0",
     "object-assign": "4.1.0",
     "react": "15.4.1",
     "react-big-calendar": "0.12.3",
@@ -41,7 +42,9 @@
     "react-tap-event-plugin": "2.0.1",
     "redux": "3.6.0",
     "redux-saga": "0.14.3",
-    "redux-thunk": "2.1.0"
+    "redux-thunk": "2.1.0",
+    "sass-loader": "4.1.0",
+    "url-loader": "0.5.7"
   },
   "devDependencies": {
     "autoprefixer": "6.5.4",
