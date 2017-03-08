@@ -1,15 +1,10 @@
 
 export default function form(state = {}, action) {
     switch (action.type) {
-        case 'BLUR':
+        case 'FORM':
             return {
                 ...state,
                 [action.name]: action.value,
-            };
-        case 'EMAIL_NOTIFICATION':
-            return {
-                ...state,
-                [action.name]: action.checked,
             };
         case 'LOAD_CLIENT_SETTING_SUCCEED':
             return {
@@ -37,6 +32,9 @@ export default function form(state = {}, action) {
                 FullName: action.selectedData && action.selectedData.person.fullName,
                 Phone: action.selectedData && action.selectedData.person.phone,
                 Email: action.selectedData && action.selectedData.person.email,
+                week: action.selectedData && action.selectedData.person.week,
+                day: action.selectedData && action.selectedData.person.day,
+                hour: action.selectedData && action.selectedData.person.hour,
             };
         default:
             return state;
