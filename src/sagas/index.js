@@ -4,7 +4,7 @@ function* loadClientSetting(clientId) {
         const workHour =
             {
                 startHour: new Date(2017, 1, 1, 10, 0, 0),
-                endHour: new Date(2017, 1, 1, 12, 30, 0),
+                endHour: new Date(2017, 1, 1, 16, 30, 0),
                 stepMinute: 30,
             }
         yield put({ type: 'LOAD_CLIENT_SETTING_SUCCEED', workHour });
@@ -19,19 +19,23 @@ function* loadAppointments(clientId, firstDayOfWeek) {
             person: {
                 fullName: 'sara',
                 phone: '7786819914',
-                email: 'sara.bahrani@gmail.com'
+                email: 'sara.bahrani@gmail.com',
+                week: true,
+                
             },
-            startDate: new Date(2017, 1, 23, 10, 30),
-            endDate: new Date(2017, 1, 23, 11),
+            startDate: new Date(2017, 2, 5, 10, 30),
+            endDate: new Date(2017, 2, 5, 11),
         },
         {
             person: {
                 fullName: 'iman',
                 phone: '778456844',
-                email: 'iman.@gmail.com'
+                email: 'iman.@gmail.com',
+                day: true,
+              
             },
-            startDate: new Date(2017, 1, 24, 11),
-            endDate: new Date(2017, 1, 24, 11, 30),
+            startDate: new Date(2017, 2, 7, 11),
+            endDate: new Date(2017, 2, 7, 11, 30),
         },];
         yield put({ type: 'LOAD_APPOINTMENTS_SUCCEED', appointment });
 
