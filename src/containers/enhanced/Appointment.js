@@ -1,32 +1,29 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { setAppointment } from '../../actions';
-import FlatButton from 'material-ui/FlatButton';
 class Appointment extends Component {
     onSelectSlot = (selectedData) => {
-        this.props.setAppointment(selectedData);
+        if (selectedData)
+            this.props.setAppointment(selectedData);
     }
     render() {
         let selectedData = null;
-        let label = "";
+        let label = "Add";
+        let btnType = "btn btn-info";
         const p = this.props;
-        const styles = {
-            height: 'auto',
-        };
-        let appointmentInfoToShow = null;
         if (p.appointment) {
             selectedData = p.appointment;
-            appointmentInfoToShow = selectedData.person.fullName;
-            label = "Edit";
+            label = selectedData.person.fullName;
+            btnType = "btn btn-success";
         }
-        else
-            label = "Add";
+
         return (
-            <div className="col-xs-1 cell reservationCell">
-                {appointmentInfoToShow}
-                <FlatButton className="col-xs-1 cell flatButton" label={label} style={styles}
-                    onClick={() => this.onSelectSlot(selectedData)} value={selectedData} />
-            </div>
+            <td className="col">
+                <button className={btnType}
+                    onClick={() => this.onSelectSlot(selectedData)} >
+                    {label}
+                </button>
+            </td>
         );
     }
 }
