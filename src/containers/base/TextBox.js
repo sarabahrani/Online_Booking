@@ -61,7 +61,7 @@ function mapStateToProps(state, props) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onBlur: (name, value) => dispatch(onBlur(name, value)),
+        onBlur: (name, value) => dispatch({ type:'FORM',name, value}),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TextBox);
