@@ -15,6 +15,7 @@ class Calendar extends React.Component {
         temp.setDate(temp.getDate() - fd);
         this.state = {
             firstDayOfWeek: temp,
+            year:temp.getFullYear(),
             appointments: [],
         };
         props.loadClientSetting(props.clientId);
@@ -25,24 +26,28 @@ class Calendar extends React.Component {
             let temp = new Date(newProps.date);
             const fd = temp.getDay();
             temp.setDate(temp.getDate() - fd);
-            this.setState({ firstDayOfWeek: temp });
+            this.setState({ firstDayOfWeek: temp,
+            year: temp.getFullYear() });
         }
     }
     prevClick = () => {
         let temp = new Date(this.state.firstDayOfWeek);
         temp.setDate(temp.getDate() - 7);
-        this.setState({ firstDayOfWeek: temp });
+        this.setState({ firstDayOfWeek: temp,
+        year: temp.getFullYear() });
     }
     todayClick = () => {
         let temp = new Date();
         const fd = temp.getDay();
         temp.setDate(temp.getDate() - fd);
-        this.setState({ firstDayOfWeek: temp });
+        this.setState({ firstDayOfWeek: temp,
+        year: temp.getFullYear() });
     }
     nextClick = () => {
         let temp = new Date(this.state.firstDayOfWeek);
         temp.setDate(temp.getDate() + 7);
-        this.setState({ firstDayOfWeek: temp });
+        this.setState({ firstDayOfWeek: temp,
+        year: temp.getFullYear() });
     }
     render() {
         const p = this.props;
@@ -57,14 +62,14 @@ class Calendar extends React.Component {
         let time = new Date(p.workHour.startHour);
 
         let header = [];
-        header.push(<div className="col-xs-1 cell">&nbsp;</div>);//to add first empty column for hours
+        header.push(<th className="col-md-1">&nbsp;</th>);//to add first empty column for hours
         for (let i = 0; i < 7; i++) {
             header.push(
-                <div className="col-xs-1 cell" key={i}>
+                <th className="col" id="calendar-header" key={i}>
                     <span>{temp.toLocaleDateString('en-US', weekdayOption)} </span>
                     <br />
                     <span>{temp.toLocaleDateString('en-US', dayOption)}</span>
-                </div>
+                </th>
             );
             //generate next day
             temp.setDate(temp.getDate() + 1);
@@ -74,7 +79,7 @@ class Calendar extends React.Component {
             let rowContent = [];
             const min = time.getMinutes();
             //Creating firt column, appointmnet hours
-            rowContent.push(<div className="col-xs-1 cell firstColumn">{`${time.getHours()}:${min < 10 ? "0" + min : min}`}</div>);
+            rowContent.push(<td className="first-column">{`${time.getHours()}:${min < 10 ? "0" + min : min}`}</td>);
             //Creating appointments' cell(specific hour, all week days)
             for (let i = 0; i < 7; i++) {
                 let slotDate = new Date(this.state.firstDayOfWeek);
@@ -90,20 +95,36 @@ class Calendar extends React.Component {
                 );
             }
             body.push(
-                <div className="row calendar-body">
+                <tr className="row">
                     {rowContent}
-                </div>
+                </tr>
             );
             time = new Date(time.valueOf() + 1000 * 60 * p.workHour.stepMinute);
         }
         return (
             <div>
-                <Button name="prevWeek" label="Prev" onClick={this.prevClick} />
-                <Button name="today" label="Today" onClick={this.todayClick} />
-                <Button name="nextWeek" label="Next" onClick={this.nextClick} />
+                <div className="dashhead">
+                    <div className="dashhead-titles">
+                        <h3 className="dashhead-title">Booking List</h3>
+                        <h4>{this.state.year}</h4>
+                    </div>
+                    <div className="dashhead-toolbar">
+                        <div className="btn-group dashhead-toolbar-item btn-group-thirds">
+                            <button type="button" className="btn btn-nav btn-outline-primary" onClick={this.prevClick}>Prev</button>
+                            <button type="button" className="btn btn-nav btn-outline-primary active" onClick={this.todayClick}>Today</button>
+                            <button type="button" className="btn btn-nav btn-outline-primary" onClick={this.nextClick}>Next</button>
+                        </div>
+                    </div>
+                </div>
                 <div className="calendar">
-                    <div className="row calendar-header">{header}</div>
-                    {body}
+                    <table className="table table-striped table-hover ">
+                        <thead>
+                            <tr className="row">{header}</tr>
+                        </thead>
+                        <tbody id="calendar-body">
+                            {body}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         );
