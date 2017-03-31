@@ -15,8 +15,7 @@ class Calendar extends React.Component {
         temp.setDate(temp.getDate() - fd);
         this.state = {
             firstDayOfWeek: temp,
-            year:temp.getFullYear(),
-            appointments: [],
+            year: temp.getFullYear(),
         };
         props.loadClientSetting(props.clientId);
         props.loadAppointments(props.clientId, this.state.firstDayOfWeek);
@@ -26,28 +25,36 @@ class Calendar extends React.Component {
             let temp = new Date(newProps.date);
             const fd = temp.getDay();
             temp.setDate(temp.getDate() - fd);
-            this.setState({ firstDayOfWeek: temp,
-            year: temp.getFullYear() });
+            this.setState({
+                firstDayOfWeek: temp,
+                year: temp.getFullYear()
+            });
         }
     }
     prevClick = () => {
         let temp = new Date(this.state.firstDayOfWeek);
         temp.setDate(temp.getDate() - 7);
-        this.setState({ firstDayOfWeek: temp,
-        year: temp.getFullYear() });
+        this.setState({
+            firstDayOfWeek: temp,
+            year: temp.getFullYear()
+        });
     }
     todayClick = () => {
         let temp = new Date();
         const fd = temp.getDay();
         temp.setDate(temp.getDate() - fd);
-        this.setState({ firstDayOfWeek: temp,
-        year: temp.getFullYear() });
+        this.setState({
+            firstDayOfWeek: temp,
+            year: temp.getFullYear()
+        });
     }
     nextClick = () => {
         let temp = new Date(this.state.firstDayOfWeek);
         temp.setDate(temp.getDate() + 7);
-        this.setState({ firstDayOfWeek: temp,
-        year: temp.getFullYear() });
+        this.setState({
+            firstDayOfWeek: temp,
+            year: temp.getFullYear()
+        });
     }
     render() {
         const p = this.props;
@@ -59,10 +66,9 @@ class Calendar extends React.Component {
             day: 'numeric',
         };
         let temp = new Date(this.state.firstDayOfWeek);
-        let time = new Date(p.workHour.startHour);
-
+        let time = new Date(p.clientInfo.startHour);
         let header = [];
-        header.push(<th className="col-md-1">&nbsp;</th>);//to add first empty column for hours
+        header.push(<th className="col-md-1">&nbsp;</th>);//to add first empty cell
         for (let i = 0; i < 7; i++) {
             header.push(
                 <th className="col" id="calendar-header" key={i}>
@@ -75,7 +81,7 @@ class Calendar extends React.Component {
             temp.setDate(temp.getDate() + 1);
         }
         let body = [];
-        while (time < p.workHour.endHour) {
+        while (time <= p.clientInfo.endHour) {
             let rowContent = [];
             const min = time.getMinutes();
             //Creating firt column, appointmnet hours
@@ -89,8 +95,11 @@ class Calendar extends React.Component {
                 slotDate.setSeconds(0);
                 slotDate.setMilliseconds(0);
                 let currentApp = "";
-                if (p.appointment)
-                    currentApp = p.appointment.find((p) => { return p.startDate.getTime() == slotDate.getTime(); });
+                if (p.appointment) {
+                    currentApp = p.appointment.find((p) => {
+                        return p.date.getTime() == slotDate.getTime();
+                    });
+                }
                 rowContent.push(<Appointment date={slotDate} appointment={currentApp} />
                 );
             }
@@ -99,7 +108,7 @@ class Calendar extends React.Component {
                     {rowContent}
                 </tr>
             );
-            time = new Date(time.valueOf() + 1000 * 60 * p.workHour.stepMinute);
+            time = new Date(time.valueOf() + 1000 * 60 * p.clientInfo.stepMinute);
         }
         return (
             <div>
@@ -139,7 +148,7 @@ Calendar.propTypes = {
 };
 function mapStateToProps(state) {
     return {
-        workHour: state.form.workHour ? state.form.workHour : {},
+        clientInfo: state.form.clientInfo ? state.form.clientInfo : {},
         appointment: state.form.appointment ? state.form.appointment : {},
     };
 }

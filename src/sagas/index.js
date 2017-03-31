@@ -1,13 +1,29 @@
-import { put, takeLatest, fork } from 'redux-saga/effects';
+import { put, fork,takeLatest } from 'redux-saga/effects';
+const clientUrl =`http://onlinebookingservice.azurewebsites.net/api/client/1`;
+const appointmentUrl='http://onlinebookingservice.azurewebsites.net/api/appointment/';
+function fetchUrlData(url) {
+    return  fetch(url , {
+        method: 'get',
+        dataType: 'json',
+        headers: {
+            'Accept': 'application/json',
+            'contentType': 'application/json',
+            'request-mode': 'no-cors',
+        }
+    }).then(statusHelper)
+        .then(response =>  response.json());
+}
+function statusHelper(response) {
+    if (response.status >= 200 && response.status < 300) {
+        return Promise.resolve(response);
+    } else {
+        return Promise.reject(new Error(response.statusText));
+    }
+}
 function* loadClientSetting(clientId) {
     try {
-        const workHour =
-            {
-                startHour: new Date(2017, 1, 1, 10, 0, 0),
-                endHour: new Date(2017, 1, 1, 16, 30, 0),
-                stepMinute: 30,
-            }
-        yield put({ type: 'LOAD_CLIENT_SETTING_SUCCEED', workHour });
+        const clientInfo = yield fetchUrlData(clientUrl);
+        yield put({ type: 'LOAD_CLIENT_SETTING_SUCCEED', clientInfo });
 
     } catch (e) {
         yield put({ type: 'LOAD_CLIENT_SETTING_FAILED', message: e.message });
@@ -15,30 +31,9 @@ function* loadClientSetting(clientId) {
 }
 function* loadAppointments(clientId, firstDayOfWeek) {
     try {
-        const appointment = [{
-            person: {
-                fullName: 'sara',
-                phone: '7786819914',
-                email: 'sara.bahrani@gmail.com',
-                week: true,
-                
-            },
-            startDate: new Date(2017, 2, 5, 10, 30),
-            endDate: new Date(2017, 2, 5, 11),
-        },
-        {
-            person: {
-                fullName: 'iman',
-                phone: '778456844',
-                email: 'iman.@gmail.com',
-                day: true,
-              
-            },
-            startDate: new Date(2017, 2, 7, 11),
-            endDate: new Date(2017, 2, 7, 11, 30),
-        },];
-        yield put({ type: 'LOAD_APPOINTMENTS_SUCCEED', appointment });
-
+        let appointment = yield fetchUrlData(appointmentUrl);
+        appointment=appointment.data;
+        yield put({ type: 'LOAD_APPOINTMENTS_SUCCEED', appointment});
     } catch (e) {
         yield put({ type: 'LOAD_APPOINTMENTS_FAILED', message: e.message });
     }

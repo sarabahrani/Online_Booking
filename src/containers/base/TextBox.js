@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { onBlur } from '../../actions';
 import TextField from 'material-ui/TextField';
 import validate, { valRequired } from '../../validation';
 

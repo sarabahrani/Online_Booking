@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { setAppointment } from '../../actions';
 class Appointment extends Component {
     onSelectSlot = (selectedData) => {
-        if (selectedData)
             this.props.setAppointment(selectedData);
     }
     render() {
@@ -13,10 +12,9 @@ class Appointment extends Component {
         const p = this.props;
         if (p.appointment) {
             selectedData = p.appointment;
-            label = selectedData.person.fullName;
+            label = selectedData.fullName;
             btnType = "btn btn-success";
         }
-
         return (
             <td className="col">
                 <button className={btnType}
