@@ -2,8 +2,15 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { setAppointment } from '../../actions';
 class Appointment extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            disabled: ""
+        };
+    }
     onSelectSlot = (selectedData) => {
-            this.props.setAppointment(selectedData);
+        this.setState({ disabled: "disabled" });
+        this.props.setAppointment(selectedData);
     }
     render() {
         let selectedData = null;
@@ -18,7 +25,8 @@ class Appointment extends Component {
         return (
             <td className="col">
                 <button className={btnType}
-                    onClick={() => this.onSelectSlot(selectedData)} >
+                    onClick={() => this.onSelectSlot(selectedData)}
+                    disabled={this.state.disabled}>
                     {label}
                 </button>
             </td>

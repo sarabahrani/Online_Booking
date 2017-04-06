@@ -17,3 +17,9 @@ export function setAppointment(selectedData) {
     selectedData,
   };
 }
+export function appointmentSubmit(data) {
+  return {
+    type: 'APPOINTMENT_SUBMIT',
+    data,
+  };
+}
